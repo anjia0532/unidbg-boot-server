@@ -1,0 +1,16 @@
+server:
+  port: 9999
+
+application:
+  unidbg:
+    dynarmic: false
+    verbose: false
+
+spring:
+  task:
+    execution:
+      pool:
+        allow-core-thread-timeout: true
+        core-size: 8
+        keep-alive: 60s
+        max-size: 8
