@@ -48,7 +48,7 @@ java -jar target\unidbg-boot-server-0.0.1-SNAPSHOT.jar
 
 - 如果是windows的powershell, - 需要改成 `- ,建议windows用cmd
 - 将 your_docker_hub_username 换成真实的用户名 ,将 your_docker_hub_password 换成真实的密码
--
+
 
 ```bash
 
@@ -65,6 +65,16 @@ docker load --input target/jib-image.tar
 # 在装有docker的机器上运行
 sudo docker run  -d -p9999:9999 your_docker_hub_password/unidbg-boot-server 
 
+```
+
+## 快速体验
+```bash
+# 体验jar版本
+mvn package -T10 -DskipTests
+java -jar target\unidbg-boot-server-0.0.1-SNAPSHOT.jar
+
+# 体验docker版本
+sudo docker run  -d -p9999:9999 anjia0532/unidbg-boot-server 
 ```
 
 ## 调用
