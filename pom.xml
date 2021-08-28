@@ -16,6 +16,7 @@
     <properties>
         <java.version>1.8</java.version>
         <unidbg.version>0.9.4</unidbg.version>
+        <jib-maven-plugin.version>3.1.4</jib-maven-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -82,6 +83,40 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>${jib-maven-plugin.version}</version>
+                    <configuration>
+                        <from>
+                            <image>anjia0532/openjdk-8-alpine-lib:3.2.0</image>
+                        </from>
+                        <extraDirectories>
+                            <paths>
+                                <path>src/main/docker/jib</path>
+                            </paths>
+                        </extraDirectories>
+                        <container>
+                            <entrypoint>
+                                <shell>/sbin/tini</shell>
+                                <option>--</option>
+                            </entrypoint>
+                            <args>
+                                <arg>sh</arg>
+                                <arg>-c</arg>
+                                <arg>chmod +x /entrypoint.sh &amp;&amp; /entrypoint.sh</arg>
+                            </args>
+                            <ports>
+                                <port>9999</port>
+                            </ports>
+                        </container>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 </project>

@@ -30,12 +30,46 @@ spring:
 
 ## 使用
 
+### java 打包
+
 ```
 # 打包
 mvn package -T10 -DskipTests
 # 运行
 java -jar target\unidbg-boot-server-0.0.1-SNAPSHOT.jar
-# 调用
+```
+
+### docker打包
+
+用docker打包是为了避免个人电脑和生产服务器环境不一致导致的启动失败或者各种问题，保证了开发和生产环境的一致性，以及快速安装等需求
+
+如何安装docker 参考docker官方文档 https://docs.docker.com/engine/install/
+**注意**
+
+- 如果是windows的powershell, - 需要改成 `- ,建议windows用cmd
+- 将 your_docker_hub_username 换成真实的用户名 ,将 your_docker_hub_password 换成真实的密码
+-
+
+```bash
+
+# 方案1 打包并发布到docker hub
+mvn compile -Djib.to.auth.username=your_docker_hub_username  -Djib.to.auth.password=your_docker_hub_password -Djib.to.image=your_docker_hub_username/unidbg-boot-server  jib:build -Dmaven.test.skip=true --batch-mode -T4
+
+# 方案2 直接打到docker 守护进程里
+mvn compile  -Djib.to.image=your_docker_hub_password/unidbg-boot-server  jib:dockerBuild -Dmaven.test.skip=true --batch-mode -T4
+
+# 方案3 打成docker.tar二进制包
+mvn compile  -Djib.to.image=your_docker_hub_password/unidbg-boot-server  jib:buildTar -Dmaven.test.skip=true --batch-mode -T4
+docker load --input target/jib-image.tar
+
+# 在装有docker的机器上运行
+sudo docker run  -d -p9999:9999 your_docker_hub_password/unidbg-boot-server 
+
+```
+
+## 调用
+
+```bash
 curl  http://127.0.0.1:9999/api/tt-encrypt/encrypt
 ```
 
@@ -57,6 +91,7 @@ Transfer/sec:    501.09KB
 ```
 
 瓶颈在cpu上
+
 ![](docs/1.png)
 
 ## 常见问题

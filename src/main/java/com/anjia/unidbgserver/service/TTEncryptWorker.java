@@ -6,6 +6,7 @@ import com.github.unidbg.worker.WorkerPool;
 import com.github.unidbg.worker.WorkerPoolFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +22,20 @@ public class TTEncryptWorker implements Worker {
     private WorkerPool pool;
     private TTEncrypt ttEncrypt;
 
+
     public TTEncryptWorker() {
 
     }
 
     @Autowired
-    public TTEncryptWorker(UnidbgProperties unidbgProperties) {
+    public TTEncryptWorker(UnidbgProperties unidbgProperties,
+                           @Value("${spring.task.execution.pool.core-size:4}") int poolSize) {
         this.unidbgProperties = unidbgProperties;
         this.ttEncrypt = new TTEncrypt(unidbgProperties);
         pool = WorkerPoolFactory.create(() ->
                         new TTEncryptWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose()),
-                Runtime.getRuntime().availableProcessors());
+                Math.max(poolSize, 4));
+        log.info("线程池为:{}", Math.max(poolSize, 4));
     }
 
     public TTEncryptWorker(boolean dynarmic, boolean verbose) {
