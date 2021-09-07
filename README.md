@@ -30,6 +30,19 @@ spring:
 
 ## 使用
 
+### 使用定制化/快照版unidbg
+
+```bash
+git clone https://github.com/zhkl0228/unidbg.git
+cd unidbg
+mvn clean install -Dgpg.skip=true -T10
+```
+
+
+以最新快照版 `0.9.5-SNAPSHOT` 为例，修改 `unidbg-boot-server/pom.xml` 里的 `<unidbg.version>0.9.4</unidbg.version>` 为 `<unidbg.version>0.9.5-SNAPSHOT</unidbg.version>`
+
+后续java打包或者docker不变
+
 ### java 打包
 
 ```
