@@ -87,7 +87,7 @@ mvn package -T10 -DskipTests
 java -jar target\unidbg-boot-server-0.0.1-SNAPSHOT.jar
 
 # 体验docker版本
-sudo docker run  -d -p9999:9999 anjia0532/unidbg-boot-server 
+docker run --restart=always -d -p9999:9999 anjia0532/unidbg-boot-server 
 ```
 
 ## 调用
@@ -118,6 +118,36 @@ Transfer/sec:    501.09KB
 ![](docs/1.png)
 
 ## 常见问题
+
+### 服务挂掉后如何自动重启
+
+群里有朋友反馈服务运行后会自动挂掉，我没有遇到也没有复现，但是针对这个问题，可以换个思路，将保证服务不挂掉，改成，即使服务挂掉，如何快速自动重启
+
+基于此，给出跨平台的几种方案
+
+跨平台的方案使用docker,支持windows/mac/linux (如何安装docker 参考docker官方文档 https://docs.docker.com/engine/install/)
+```bash
+docker run --restart=always -d -p9999:9999 anjia0532/unidbg-boot-server
+```
+
+windows 下可以用 [nssm](http://www.nssm.cc/download), 参考 [nssm 在windows上部署服务](https://www.cnblogs.com/hai-cheng/p/8670395.html)
+
+linux和mac os 下可以用 Supervisor 参考 [Supervisor-java守护进程工具](https://blog.csdn.net/fuchen91/article/details/107086802/)
+
+### 打包后无法访问文件，报 java.io.FileNotFoundException
+
+以demo里的为例 https://github.com/anjia0532/unidbg-boot-server/blob/main/src/main/java/com/anjia/unidbgserver/service/TTEncrypt.java#L61
+
+把二进制文件 libttEncrypt.so 放到 `src/resources/data/apks/so/` 下, 然后调用`TempFileUtils.getTempFile(LIBTT_ENCRYPT_LIB_PATH)` (将classpath下的文件copy到临时目录里，后边访问临时目录的即可。)
+
+**为啥不直接写死绝对路径，一旦换机器部署，就要重新修改源代码，重新打包，尤其是把代码分发给网友时，很容易踩坑报错。**
+
+```java
+
+    private final static String LIBTT_ENCRYPT_LIB_PATH = "data/apks/so/libttEncrypt.so";
+
+    vm.loadLibrary(TempFileUtils.getTempFile(LIBTT_ENCRYPT_LIB_PATH), false);
+```
 
 ### 高并发请求
 
