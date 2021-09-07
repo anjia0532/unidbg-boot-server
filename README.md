@@ -57,6 +57,7 @@ java -jar target\unidbg-boot-server-0.0.1-SNAPSHOT.jar
 用docker打包是为了避免个人电脑和生产服务器环境不一致导致的启动失败或者各种问题，保证了开发和生产环境的一致性，以及快速安装等需求
 
 如何安装docker 参考docker官方文档 https://docs.docker.com/engine/install/
+
 **注意**
 
 - 如果是windows的powershell, - 需要改成 `- ,建议windows用cmd
