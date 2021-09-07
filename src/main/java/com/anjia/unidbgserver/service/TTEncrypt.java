@@ -24,6 +24,7 @@ import com.sun.jna.Pointer;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
@@ -60,7 +61,7 @@ public class TTEncrypt {
         vm.setVerbose(unidbgProperties.isVerbose());
         File soLibFile = new File(System.getProperty("java.io.tmpdir") + LIBTT_ENCRYPT_LIB_PATH);
         if (!soLibFile.exists()) {
-            FileUtils.copyFile(new ClassPathResource(LIBTT_ENCRYPT_LIB_PATH).getFile(), soLibFile);
+            FileUtils.copyInputStreamToFile(new ClassPathResource(LIBTT_ENCRYPT_LIB_PATH).getInputStream(), soLibFile);
         }
         // 加载libttEncrypt.so到unicorn虚拟内存，加载成功以后会默认调用init_array等函数
         DalvikModule dm = vm.loadLibrary(soLibFile, false);
