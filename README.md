@@ -119,6 +119,30 @@ Transfer/sec:    501.09KB
 
 ## 常见问题
 
+### 访问demo返回乱码
+
+正常，因为demo返回的是 `byte[]` 数组，没有对其进行处理 ![](docs/2.png)
+
+### 如何进行单元测试
+
+传统的办法是在一个大类里写各种main函数，每次改了都注释，或者写多个main函数，来回改名字。其实不用这么麻烦，用单元测试就可以了。
+
+具体可以参考  `src/test/java/com/anjia/unidbgserver/service`  下的
+
+- `TTEncryptTest.java` 基本等同于main启动，不加载spring那一套，启动速度快，不测试worker，只测试实际业务
+
+- `TTEncryptWorkerTest` 加载spring整套环境，测试多线程worker
+
+`@Test` 可以简单理解成一个个mian函数，可以直接运行的
+
+`@BeforeEach` 是不管起哪个 `@Test` 方法都会先执行 带`@BeforeEach` 
+
+### 修改日志等级
+
+正常运行的，修改 `src/main/resources/logback-spring.xml` 里的
+
+单元测试的，修改 `src/test/resources/logback-test.xml` 里的
+
 ### 服务挂掉后如何自动重启
 
 群里有朋友反馈服务运行后会自动挂掉，我没有遇到也没有复现，但是针对这个问题，可以换个思路，将保证服务不挂掉，改成，即使服务挂掉，如何快速自动重启
@@ -152,7 +176,7 @@ linux和mac os 下可以用 Supervisor 参考 [Supervisor-java守护进程工具
 ### 高并发请求
 
 参考 `com.anjia.unidbgserver.web.TTEncryptController` 和 `com.anjia.unidbgserver.service.TTEncrypt`
-和 `com.anjia.unidbgserver.service.TTEncryptWorker` 和 `com.anjia.unidbgserver.service.TTEncryptTest`
+和 `com.anjia.unidbgserver.service.TTEncryptWorker` 和 `com.anjia.unidbgserver.service.TTEncryptWorkerTest`
 
 主要unidbg模拟逻辑在 `com.anjia.unidbgserver.service.TTEncrypt` 里
 
@@ -160,7 +184,7 @@ linux和mac os 下可以用 Supervisor 参考 [Supervisor-java守护进程工具
 
 `com.anjia.unidbgserver.service.TTEncryptWorker` 是用多线程包装了一层
 
-`com.anjia.unidbgserver.service.TTEncryptTest` 是单元测试
+`com.anjia.unidbgserver.service.TTEncryptWorkerTest` 是单元测试
 
 ### 修改日志等级
 

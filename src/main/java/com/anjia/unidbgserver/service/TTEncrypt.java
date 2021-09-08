@@ -170,10 +170,10 @@ public class TTEncrypt {
             xHook.refresh();
         }
 
-        if (DEBUG_FLAG) {
-            // 附加IDA android_server，可输入c命令取消附加继续运行
-            emulator.attach(DebuggerType.ANDROID_SERVER_V7);
-        }
+        //if (DEBUG_FLAG) {
+        //    // 附加IDA android_server，可输入c命令取消附加继续运行
+        //    emulator.attach(DebuggerType.ANDROID_SERVER_V7);
+        //}
         byte[] data = new byte[16];
         // 执行Jni方法
         ByteArray array = TTEncryptUtils.callStaticJniMethodObject(emulator, "ttEncrypt([BI)[B", new ByteArray(vm, data), data.length);

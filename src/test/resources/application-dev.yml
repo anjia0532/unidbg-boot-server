@@ -1,0 +1,7 @@
+server:
+  port: 9999
+
+application:
+  unidbg:
+    dynarmic: true
+    verbose: false
