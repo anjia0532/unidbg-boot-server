@@ -30,6 +30,11 @@ spring:
 
 ## 使用
 
+### 环境准备
+
+1. 必须使用Java8
+2. Maven3.5以上 ，如果电脑没有安装Maven，最简单办法是将下面的 `mvn` 命令替换成 `mvnw` ，会自动下载maven 
+
 ### 使用定制化/快照版unidbg
 
 ```bash
@@ -38,8 +43,8 @@ cd unidbg
 mvn clean install -Dgpg.skip=true -T10
 ```
 
-
-以最新快照版 `0.9.5-SNAPSHOT` 为例，修改 `unidbg-boot-server/pom.xml` 里的 `<unidbg.version>0.9.4</unidbg.version>` 为 `<unidbg.version>0.9.5-SNAPSHOT</unidbg.version>`
+以最新快照版 `0.9.5-SNAPSHOT` 为例，修改 `unidbg-boot-server/pom.xml` 里的 `<unidbg.version>0.9.4</unidbg.version>`
+为 `<unidbg.version>0.9.5-SNAPSHOT</unidbg.version>`
 
 后续java打包或者docker不变
 
@@ -63,7 +68,6 @@ java -jar target\unidbg-boot-server-0.0.1-SNAPSHOT.jar
 - 如果是windows的powershell, - 需要改成 `- ,建议windows用cmd
 - 将 your_docker_hub_username 换成真实的用户名 ,将 your_docker_hub_password 换成真实的密码
 
-
 ```bash
 
 # 方案1 打包并发布到docker hub
@@ -82,6 +86,7 @@ sudo docker run  -d -p9999:9999 your_docker_hub_password/unidbg-boot-server
 ```
 
 ## 快速体验
+
 ```bash
 # 体验jar版本
 mvn package -T10 -DskipTests
@@ -114,7 +119,7 @@ Requests/sec:   4003.10
 Transfer/sec:    501.09KB
 ```
 
-瓶颈在cpu上
+瓶颈在cpu上,demo内存基本在400-600M左右，不会随着并发高而暴涨(注意，仅是此demo情况下，具体还是看实际业务复杂度)
 
 ![](docs/1.png)
 
@@ -136,7 +141,7 @@ Transfer/sec:    501.09KB
 
 `@Test` 可以简单理解成一个个mian函数，可以直接运行的
 
-`@BeforeEach` 是不管起哪个 `@Test` 方法都会先执行 带`@BeforeEach` 
+`@BeforeEach` 是不管起哪个 `@Test` 方法都会先执行 带`@BeforeEach`
 
 ### 修改日志等级
 
@@ -151,11 +156,13 @@ Transfer/sec:    501.09KB
 基于此，给出跨平台的几种方案
 
 跨平台的方案使用docker,支持windows/mac/linux (如何安装docker 参考docker官方文档 https://docs.docker.com/engine/install/)
+
 ```bash
 docker run --restart=always -d -p9999:9999 anjia0532/unidbg-boot-server
 ```
 
-windows 下可以用 [nssm](http://www.nssm.cc/download), 参考 [nssm 在windows上部署服务](https://www.cnblogs.com/hai-cheng/p/8670395.html)
+windows 下可以用 [nssm](http://www.nssm.cc/download),
+参考 [nssm 在windows上部署服务](https://www.cnblogs.com/hai-cheng/p/8670395.html)
 
 linux和mac os 下可以用 Supervisor 参考 [Supervisor-java守护进程工具](https://blog.csdn.net/fuchen91/article/details/107086802/)
 
@@ -163,15 +170,16 @@ linux和mac os 下可以用 Supervisor 参考 [Supervisor-java守护进程工具
 
 以demo里的为例 https://github.com/anjia0532/unidbg-boot-server/blob/main/src/main/java/com/anjia/unidbgserver/service/TTEncrypt.java#L61
 
-把二进制文件 libttEncrypt.so 放到 `src/resources/data/apks/so/` 下, 然后调用`TempFileUtils.getTempFile(LIBTT_ENCRYPT_LIB_PATH)` (将classpath下的文件copy到临时目录里，后边访问临时目录的即可。)
+把二进制文件 libttEncrypt.so 放到 `src/resources/data/apks/so/` 下, 然后调用`TempFileUtils.getTempFile(LIBTT_ENCRYPT_LIB_PATH)` (
+将classpath下的文件copy到临时目录里，后边访问临时目录的即可。)
 
 **为啥不直接写死绝对路径，一旦换机器部署，就要重新修改源代码，重新打包，尤其是把代码分发给网友时，很容易踩坑报错。**
 
 ```java
 
-    private final static String LIBTT_ENCRYPT_LIB_PATH = "data/apks/so/libttEncrypt.so";
+        private final static String LIBTT_ENCRYPT_LIB_PATH="data/apks/so/libttEncrypt.so";
 
-    vm.loadLibrary(TempFileUtils.getTempFile(LIBTT_ENCRYPT_LIB_PATH), false);
+        vm.loadLibrary(TempFileUtils.getTempFile(LIBTT_ENCRYPT_LIB_PATH),false);
 ```
 
 ### 高并发请求

@@ -42,6 +42,7 @@ public class TTEncryptWorker implements Worker {
         this.unidbgProperties = new UnidbgProperties();
         unidbgProperties.setDynarmic(dynarmic);
         unidbgProperties.setVerbose(verbose);
+        log.info("是否启用动态引擎:{},是否打印详细信息:{}", dynarmic, verbose);
         this.ttEncrypt = new TTEncrypt(unidbgProperties);
     }
 
@@ -64,7 +65,7 @@ public class TTEncryptWorker implements Worker {
     @Override
     public void close() throws IOException {
         ttEncrypt.destroy();
-        System.err.println("Destroy: " + ttEncrypt);
+        log.info("Destroy: {}", ttEncrypt);
     }
 
     private byte[] doWork() {
