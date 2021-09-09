@@ -104,7 +104,7 @@ curl  http://127.0.0.1:9999/api/tt-encrypt/encrypt
 
 ## 压测
 
-在我个人开发电脑上，压测结果是每秒4003.10次(QPS 4003.10) ，wrk相关教程，可以参考 [HTTP压测工具之wrk](https://www.jianshu.com/p/ac185e01cc30)
+在我个人开发电脑上(`Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz   2.60 GHz`,`32.0 GB (31.9 GB 可用)`,`win 11 64位`)，压测结果是每秒4003.10次(QPS 4003.10) ，wrk相关教程，可以参考 [HTTP压测工具之wrk](https://www.jianshu.com/p/ac185e01cc30)
 
 ```
 [root@wrk]# docker run --rm  williamyeh/wrk -t12 -c400 -d30s http://127.0.0.1:9999/api/tt-encrypt/encrypt
