@@ -1,4 +1,32 @@
 
+### application.yml 讲解
+
+```yaml
+server:
+  # 端口
+  port: 9999
+
+application:
+  unidbg:
+    # 是否启用 dynarmic 引擎
+    dynarmic: false
+    # 是否打印jni调用细节 vm.setVerbose()
+    verbose: false
+
+# 多线程相关
+spring:
+  task:
+    execution:
+      pool:
+        allow-core-thread-timeout: true
+        # 8个核心线程
+        core-size: 8
+        # 超过多久没用的线程自动释放
+        keep-alive: 60s
+        # 最多增长到多少线程
+        max-size: 8
+```
+
 ### PrintUtils打印工具类的用法
 ```java
 

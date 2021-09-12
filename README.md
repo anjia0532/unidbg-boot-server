@@ -1,39 +1,49 @@
 # 基于unidbg0.9.4和spring boot 2.5.3开发的高并发server服务器
 
-## application.yml 讲解
-
-```yaml
-server:
-  # 端口
-  port: 9999
-
-application:
-  unidbg:
-    # 是否启用 dynarmic 引擎
-    dynarmic: false
-    # 是否打印jni调用细节 vm.setVerbose()
-    verbose: false
-
-# 多线程相关
-spring:
-  task:
-    execution:
-      pool:
-        allow-core-thread-timeout: true
-        # 8个核心线程
-        core-size: 8
-        # 超过多久没用的线程自动释放
-        keep-alive: 60s
-        # 最多增长到多少线程
-        max-size: 8
-```
-
 ## 使用
 
 ### 环境准备
 
 1. 必须使用Java8
 2. Maven3.5以上 ，如果电脑没有安装Maven，最简单办法是将下面的 `mvn` 命令替换成 `mvnw` ，会自动下载maven 
+
+## 快速体验
+
+```bash
+# 体验jar版本
+mvn package -T10 -DskipTests
+java -jar target\unidbg-boot-server-0.0.1-SNAPSHOT.jar
+
+# 体验docker版本
+docker run --restart=always -d -p9999:9999 anjia0532/unidbg-boot-server 
+```
+
+## 调用
+
+```bash
+curl  http://127.0.0.1:9999/api/tt-encrypt/encrypt
+```
+
+## 压测
+
+在我个人开发电脑上(`Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz   2.60 GHz`,`32.0 GB (31.9 GB 可用)`,`win 11 64位`)，压测结果是每秒4003.10次(QPS 4003.10) ，wrk相关教程，可以参考 [HTTP压测工具之wrk](https://www.jianshu.com/p/ac185e01cc30)
+
+```
+[root@wrk]# docker run --rm  williamyeh/wrk -t12 -c400 -d30s http://127.0.0.1:9999/api/tt-encrypt/encrypt
+Running 30s test @ http://127.0.0.1:9999/api/tt-encrypt/encrypt
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   105.55ms   68.17ms 982.93ms   94.97%
+    Req/Sec   341.43     55.05   460.00     80.70%
+  120432 requests in 30.08s, 14.72MB read
+  Socket errors: connect 0, read 0, write 81, timeout 0
+Requests/sec:   4003.10
+Transfer/sec:    501.09KB
+```
+
+瓶颈在cpu上,demo内存基本在400-600M左右，不会随着并发高而暴涨(注意，仅是此demo情况下，具体还是看实际业务复杂度)
+
+![](docs/1.png)
 
 ### 使用定制化/快照版unidbg
 
@@ -85,43 +95,6 @@ sudo docker run  -d -p9999:9999 your_docker_hub_password/unidbg-boot-server
 
 ```
 
-## 快速体验
-
-```bash
-# 体验jar版本
-mvn package -T10 -DskipTests
-java -jar target\unidbg-boot-server-0.0.1-SNAPSHOT.jar
-
-# 体验docker版本
-docker run --restart=always -d -p9999:9999 anjia0532/unidbg-boot-server 
-```
-
-## 调用
-
-```bash
-curl  http://127.0.0.1:9999/api/tt-encrypt/encrypt
-```
-
-## 压测
-
-在我个人开发电脑上(`Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz   2.60 GHz`,`32.0 GB (31.9 GB 可用)`,`win 11 64位`)，压测结果是每秒4003.10次(QPS 4003.10) ，wrk相关教程，可以参考 [HTTP压测工具之wrk](https://www.jianshu.com/p/ac185e01cc30)
-
-```
-[root@wrk]# docker run --rm  williamyeh/wrk -t12 -c400 -d30s http://127.0.0.1:9999/api/tt-encrypt/encrypt
-Running 30s test @ http://127.0.0.1:9999/api/tt-encrypt/encrypt
-  12 threads and 400 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency   105.55ms   68.17ms 982.93ms   94.97%
-    Req/Sec   341.43     55.05   460.00     80.70%
-  120432 requests in 30.08s, 14.72MB read
-  Socket errors: connect 0, read 0, write 81, timeout 0
-Requests/sec:   4003.10
-Transfer/sec:    501.09KB
-```
-
-瓶颈在cpu上,demo内存基本在400-600M左右，不会随着并发高而暴涨(注意，仅是此demo情况下，具体还是看实际业务复杂度)
-
-![](docs/1.png)
 
 ## [常见问题](QA.md)
 
