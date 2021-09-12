@@ -226,3 +226,14 @@ linux和mac os 下可以用 Supervisor 参考 [Supervisor-java守护进程工具
     <!-- 忽略其他部分 -->
 </project>
 ```
+
+## 请我喝杯咖啡
+
+如果觉得本项目对你有所帮助，可以请我喝杯咖啡吗？
+
+<table>
+    <tr>
+        <td ><center><img src="https://raw.githubusercontent.com/anjia0532/unidbg-boot-server/main/docs/wechat.png" >微&nbsp;&nbsp;信 </center></td>
+        <td ><center><img src="https://raw.githubusercontent.com/anjia0532/unidbg-boot-server/main/docs/docs/wechat.png"  >支付宝</center></td>
+    </tr>
+</table>
