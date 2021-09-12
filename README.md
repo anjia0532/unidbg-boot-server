@@ -235,6 +235,7 @@ linux和mac os 下可以用 Supervisor 参考 [Supervisor-java守护进程工具
     <tr>
         <td ><center><img src="./docs/wechat.png" >微&nbsp;&nbsp;信</center></td>
         <td ><center><img src="./docs/alipay.jpg" >支付宝</center></td>
-        <td ><center><img src="./docs/zsxq.png" >知识星球</center></td>
     </tr>
 </table>
+
+![](./docs/zsxq.png)
