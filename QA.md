@@ -1,4 +1,34 @@
 
+### PrintUtils打印工具类的用法
+```java
+
+import static com.anjia.unidbgserver.utils.PrintUtils.*;
+
+// PrintUtils.printFileResolve 用法
+@SneakyThrows @Override
+public FileResult resolve(Emulator emulator, String pathname, int oflags) {
+    // 打印    
+    printFileResolve(pathname); // 也可以使用 printFileResolve(pathname,"/path/to/apk/dir/"); 
+    // 其他逻辑
+    return null;
+}
+
+// 会打印出类似代码，可以直接复制到代码里用
+//        case "/data/app/xxxxx==/base.apk": {
+//            return FileResult.success(new SimpleFileIO(oflags, TempFileUtils.getTempFile("/path/to/apk/dir/"), pathname));
+//        }
+
+// PrintUtils.printArgs
+@Override 
+public long callStaticLongMethodV(BaseVM vm, DvmClass dvmClass, String signature, VaList vaList) {
+    printArgs("callStaticLongMethodV", signature, vaList);
+    // 其他逻辑
+    return super.callStaticLongMethodV(vm, dvmClass, signature, vaList);
+}
+// 会打印出类似代码
+// 调用方法名: callStaticLongMethodV,方法签名:XX->xx,参数:0,类型:xxx,值:xxx,参数:1,类型:bb,值:bb
+```
+
 ### 访问demo返回乱码
 
 正常，因为demo返回的是 `byte[]` 数组，没有对其进行处理 ![](docs/2.png)

@@ -20,10 +20,20 @@ public class PrintUtils {
     /**
      * 打印读取本地文件，生成伪代码
      *
+     * @param pathname 文件名
+     */
+    public static void printFileResolve(String pathname) {
+        printFileResolve(pathname, null);
+    }
+
+
+    /**
+     * 打印读取本地文件，生成伪代码
+     *
      * @param pathname      文件名
      * @param localPathName 本地文件名，可以为null
      */
-    public void printFileResolve(String pathname, String localPathName) {
+    public static void printFileResolve(String pathname, String localPathName) {
         String builder = "\n" + "            case \"" + pathname + "\": {\n" +
                 "                return FileResult.success(new SimpleFileIO(oflags, TempFileUtils.getTempFile(\""
                 + StringUtils.defaultString(localPathName) + "\"), pathname));\n" +
@@ -38,7 +48,7 @@ public class PrintUtils {
      * @param signature 方法签名
      * @param vaList    入参
      */
-    public void printArgs(VM vm, String signature, VaList vaList) {
+    public static void printArgs(VM vm, String signature, VaList vaList) {
         printArgs(vm, null, signature, vaList);
     }
 
@@ -50,7 +60,7 @@ public class PrintUtils {
      * @param signature  方法签名
      * @param vaList     入参
      */
-    public void printArgs(VM vm, String methodName, String signature, VaList vaList) {
+    public static void printArgs(VM vm, String methodName, String signature, VaList vaList) {
         StringBuilder argsBuilder = new StringBuilder();
         StringBuilder builder = new StringBuilder();
         if (StringUtils.isNotBlank(methodName)) {
