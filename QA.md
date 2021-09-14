@@ -49,13 +49,14 @@ public FileResult resolve(Emulator emulator, String pathname, int oflags) {
 // PrintUtils.printArgs
 @Override 
 public long callStaticLongMethodV(BaseVM vm, DvmClass dvmClass, String signature, VaList vaList) {
-    printArgs("callStaticLongMethodV", signature, vaList);
+    printArgs(vm,"callStaticLongMethodV", signature, vaList);
     // 其他逻辑
     return super.callStaticLongMethodV(vm, dvmClass, signature, vaList);
 }
 // 会打印出类似代码
 // 调用方法名: callStaticLongMethodV,方法签名:XX->xx,参数:0,类型:xxx,值:xxx,参数:1,类型:bb,值:bb
 ```
+**注意：** 需要修改 `logback-spring.xml` 中 `com.anjia.unidbgserver.utils.PrintUtils`为`DEBUG`
 
 ### 访问demo返回乱码
 
@@ -67,9 +68,7 @@ public long callStaticLongMethodV(BaseVM vm, DvmClass dvmClass, String signature
 
 具体可以参考  `src/test/java/com/anjia/unidbgserver/service`  下的
 
-- `TTEncryptTest.java` 基本等同于main启动，不加载spring那一套，启动速度快，不测试worker，只测试实际业务
-
-- `TTEncryptWorkerTest` 加载spring整套环境，测试多线程worker
+- `TTEncryptServiceTest.java` 基本等同于main启动 ,可以测试业务流程也可以测试多线程代码
 
 `@Test` 可以简单理解成一个个mian函数，可以直接运行的
 
@@ -116,16 +115,16 @@ vm.loadLibrary(TempFileUtils.getTempFile(LIBTT_ENCRYPT_LIB_PATH),false);
 
 ### 高并发请求
 
-参考 `com.anjia.unidbgserver.web.TTEncryptController` 和 `com.anjia.unidbgserver.service.TTEncrypt`
-和 `com.anjia.unidbgserver.service.TTEncryptWorker` 和 `com.anjia.unidbgserver.service.TTEncryptWorkerTest`
+参考 `com.anjia.unidbgserver.web.TTEncryptController` 和 `com.anjia.unidbgserver.service.TTEncryptService`
+和 `com.anjia.unidbgserver.service.TTEncryptServiceWorker` 和 `com.anjia.unidbgserver.service.TTEncryptServiceTest`
 
-主要unidbg模拟逻辑在 `com.anjia.unidbgserver.service.TTEncrypt` 里
+主要unidbg模拟逻辑在 `com.anjia.unidbgserver.service.TTEncryptService` 里
 
 `com.anjia.unidbgserver.web.TTEncryptController` 是暴露给外部http调用的
 
-`com.anjia.unidbgserver.service.TTEncryptWorker` 是用多线程包装了一层
+`com.anjia.unidbgserver.service.TTEncryptServiceWorker` 是用多线程包装了一层业务逻辑
 
-`com.anjia.unidbgserver.service.TTEncryptWorkerTest` 是单元测试
+`com.anjia.unidbgserver.service.TTEncryptServiceTest` 是单元测试
 
 ### 修改日志等级
 

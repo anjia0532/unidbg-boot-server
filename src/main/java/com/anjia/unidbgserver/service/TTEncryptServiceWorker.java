@@ -16,40 +16,40 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service("ttEncryptWorker")
-public class TTEncryptWorker implements Worker {
+public class TTEncryptServiceWorker implements Worker {
 
     private UnidbgProperties unidbgProperties;
     private WorkerPool pool;
-    private TTEncrypt ttEncrypt;
+    private TTEncryptService ttEncryptService;
 
 
-    public TTEncryptWorker() {
+    public TTEncryptServiceWorker() {
 
     }
 
     @Autowired
-    public TTEncryptWorker(UnidbgProperties unidbgProperties,
-                           @Value("${spring.task.execution.pool.core-size:4}") int poolSize) {
+    public TTEncryptServiceWorker(UnidbgProperties unidbgProperties,
+                                  @Value("${spring.task.execution.pool.core-size:4}") int poolSize) {
         this.unidbgProperties = unidbgProperties;
-        this.ttEncrypt = new TTEncrypt(unidbgProperties);
+        this.ttEncryptService = new TTEncryptService(unidbgProperties);
         pool = WorkerPoolFactory.create(() ->
-                        new TTEncryptWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose()),
+                        new TTEncryptServiceWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose()),
                 Math.max(poolSize, 4));
         log.info("线程池为:{}", Math.max(poolSize, 4));
     }
 
-    public TTEncryptWorker(boolean dynarmic, boolean verbose) {
+    public TTEncryptServiceWorker(boolean dynarmic, boolean verbose) {
         this.unidbgProperties = new UnidbgProperties();
         unidbgProperties.setDynarmic(dynarmic);
         unidbgProperties.setVerbose(verbose);
         log.info("是否启用动态引擎:{},是否打印详细信息:{}", dynarmic, verbose);
-        this.ttEncrypt = new TTEncrypt(unidbgProperties);
+        this.ttEncryptService = new TTEncryptService(unidbgProperties);
     }
 
     @Async
     public CompletableFuture<byte[]> ttEncrypt() {
 
-        TTEncryptWorker worker = pool.borrow(2, TimeUnit.SECONDS);
+        TTEncryptServiceWorker worker = pool.borrow(2, TimeUnit.SECONDS);
         assert worker != null;
         byte[] data = null;
         try {
@@ -64,12 +64,12 @@ public class TTEncryptWorker implements Worker {
 
     @Override
     public void close() throws IOException {
-        ttEncrypt.destroy();
-        log.info("Destroy: {}", ttEncrypt);
+        ttEncryptService.destroy();
+        log.info("Destroy: {}", ttEncryptService);
     }
 
     private byte[] doWork() {
-        return ttEncrypt.ttEncrypt();
+        return ttEncryptService.ttEncrypt();
     }
 
 }

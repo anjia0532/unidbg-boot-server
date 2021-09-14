@@ -29,7 +29,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Slf4j
-public class TTEncrypt {
+public class TTEncryptService {
 
     private final AndroidEmulator emulator;
     private final VM vm;
@@ -39,7 +39,7 @@ public class TTEncrypt {
     private final static String LIBTT_ENCRYPT_LIB_PATH = "data/apks/so/libttEncrypt.so";
     private final Boolean DEBUG_FLAG;
 
-    @SneakyThrows TTEncrypt(UnidbgProperties unidbgProperties) {
+    @SneakyThrows TTEncryptService(UnidbgProperties unidbgProperties) {
         DEBUG_FLAG = unidbgProperties.isVerbose();
         // 创建模拟器实例，要模拟32位或者64位，在这里区分
         EmulatorBuilder<AndroidEmulator> builder = AndroidEmulatorBuilder.for32Bit().setProcessName("com.qidian.dldl.official");

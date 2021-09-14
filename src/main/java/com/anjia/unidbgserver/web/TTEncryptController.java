@@ -1,6 +1,6 @@
 package com.anjia.unidbgserver.web;
 
-import com.anjia.unidbgserver.service.TTEncryptWorker;
+import com.anjia.unidbgserver.service.TTEncryptServiceWorker;
 import lombok.SneakyThrows;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 public class TTEncryptController {
 
     @Resource(name = "ttEncryptWorker")
-    private TTEncryptWorker ttEncryptWorker;
+    private TTEncryptServiceWorker ttEncryptServiceWorker;
 
     /**
      * 获取mtgsig
@@ -29,6 +29,6 @@ public class TTEncryptController {
      */
     @SneakyThrows @RequestMapping(value = "encrypt", method = {RequestMethod.GET, RequestMethod.POST})
     public byte[] ttEncrypt() {
-        return ttEncryptWorker.ttEncrypt().get();
+        return ttEncryptServiceWorker.ttEncrypt().get();
     }
 }
