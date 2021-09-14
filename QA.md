@@ -27,6 +27,9 @@ spring:
         max-size: 8
 ```
 
+### 打印native地址，so文件名，出入参
+参考  `src/test/java/com/anjia/unidbgserver/RegisterNativeTest.java`
+
 ### PrintUtils打印工具类的用法
 ```java
 
