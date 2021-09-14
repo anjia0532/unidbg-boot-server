@@ -35,6 +35,7 @@
     <logger name="sun.rmi.transport" level="WARN"/>
     <logger name="com.github.unidbg" level="WARN"/>
     <logger name="net.fornwall" level="ERROR"/>
+    <logger name="com.anjia.unidbgserver.utils" level="DEBUG"/>
     <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">

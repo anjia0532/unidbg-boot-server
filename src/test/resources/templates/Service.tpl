@@ -40,15 +40,12 @@ public class [(${ServiceName})]Service extends AbstractJni implements IOResolver
     private final static String BASE_[(${#strings.toUpperCase(ServiceName)})]_PATH = "data/apks/[(${#strings.toLowerCase(ServiceName)})]";
     private final static String [(${#strings.toUpperCase(ServiceName)})]_APK_PATH = BASE_[(${#strings.toUpperCase(ServiceName)})]_PATH + "/[(${#strings.toLowerCase(ServiceName)})].apk";
 
-    private final Boolean DEBUG_FLAG;
-
     private final UnidbgProperties unidbgProperties;
 
     // private final static String LIBTT_ENCRYPT_LIB_PATH = "data/apks/so/libttEncrypt.so";
 
     @SneakyThrows [(${ServiceName})]Service(UnidbgProperties unidbgProperties) {
         this.unidbgProperties = unidbgProperties;
-        DEBUG_FLAG = unidbgProperties.isVerbose();
         // 创建模拟器实例，要模拟32位或者64位，在这里区分
         EmulatorBuilder<AndroidEmulator> builder = AndroidEmulatorBuilder.for32Bit().setProcessName("com.xxxxx");
         // 动态引擎
@@ -66,6 +63,8 @@ public class [(${ServiceName})]Service extends AbstractJni implements IOResolver
         vm = emulator.createDalvikVM(TempFileUtils.getTempFile([(${#strings.toUpperCase(ServiceName)})]_APK_PATH));
         // 设置是否打印Jni调用细节
         vm.setVerbose(unidbgProperties.isVerbose());
+        vm.setJni(this);
+        emulator.getSyscallHandler().addIOResolver(this);
         // 加载libttEncrypt.so到unicorn虚拟内存，加载成功以后会默认调用init_array等函数，这是直接读so文件
         // DalvikModule dm = vm.loadLibrary(TempFileUtils.getTempFile(LIBTT_ENCRYPT_LIB_PATH), false);
         // 这是搜索加载apk里的模块名，比如 libguard.so 那么模块名一般是guard

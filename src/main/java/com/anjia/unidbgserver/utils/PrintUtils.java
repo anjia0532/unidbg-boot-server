@@ -74,6 +74,7 @@ public class PrintUtils {
         }
         try {
             for (; ; i++) {
+
                 hash = vaList.getIntArg(i);
                 if (!Objects.isNull(vm)) {
                     obj = vm.getObject(hash);
@@ -84,12 +85,15 @@ public class PrintUtils {
                 if (Objects.isNull(obj)) {
                     argsBuilder.append(",值:").append(hash);
                 } else {
-                    argsBuilder.append(",类型:").append(obj.getObjectType().getClassName()).append(",值:").append(hash);
+                    if (!Objects.isNull(obj.getObjectType())) {
+                        argsBuilder.append(",类型:").append(obj.getObjectType().getClassName());
+                    }
+                    argsBuilder.append(",值:").append(obj.getValue());
                 }
             }
         } catch (Exception ex) {
             if (i > 0) {
-                builder.append(argsBuilder.deleteCharAt(argsBuilder.length() - 1));
+                builder.append(argsBuilder);
             } else {
                 builder.append(",无参数");
             }
