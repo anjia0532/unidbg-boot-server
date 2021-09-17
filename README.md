@@ -10,8 +10,12 @@
 ## 快速体验
 
 ```bash
+git clone https://github.com/anjia0532/unidbg-boot-server.git
+
 # 体验jar版本
 mvn package -T10 -DskipTests
+# 没有maven就用 mvnw package -T10 -DskipTests
+
 java -jar target\unidbg-boot-server-0.0.1-SNAPSHOT.jar
 
 # 体验docker版本
