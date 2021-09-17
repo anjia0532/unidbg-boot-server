@@ -7,6 +7,8 @@ application:
     verbose: false
 
 spring:
+  profiles:
+    active: dev
   task:
     execution:
       pool:
