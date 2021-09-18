@@ -85,13 +85,13 @@ java -jar target\unidbg-boot-server-0.0.1-SNAPSHOT.jar
 ```bash
 
 # 方案1 打包并发布到docker hub
-mvn compile -Djib.to.auth.username=your_docker_hub_username  -Djib.to.auth.password=your_docker_hub_password -Djib.to.image=your_docker_hub_username/unidbg-boot-server  jib:build -Dmaven.test.skip=true --batch-mode -T4
+mvn clean package -Djib.to.auth.username=your_docker_hub_username  -Djib.to.auth.password=your_docker_hub_password -Djib.to.image=your_docker_hub_username/unidbg-boot-server  jib:build -Dmaven.test.skip=true --batch-mode -T4
 
 # 方案2 直接打到docker 守护进程里
-mvn compile  -Djib.to.image=your_docker_hub_password/unidbg-boot-server  jib:dockerBuild -Dmaven.test.skip=true --batch-mode -T4
+mvn clean package  -Djib.to.image=your_docker_hub_password/unidbg-boot-server  jib:dockerBuild -Dmaven.test.skip=true --batch-mode -T4
 
 # 方案3 打成docker.tar二进制包
-mvn compile  -Djib.to.image=your_docker_hub_password/unidbg-boot-server  jib:buildTar -Dmaven.test.skip=true --batch-mode -T4
+mvn clean package  -Djib.to.image=your_docker_hub_password/unidbg-boot-server  jib:buildTar -Dmaven.test.skip=true --batch-mode -T4
 docker load --input target/jib-image.tar
 
 # 在装有docker的机器上运行
