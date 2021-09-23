@@ -1,5 +1,8 @@
 # 基于unidbg0.9.4和spring boot 2.5.3开发的高并发server服务器
 
+## 重要说明
+- [关于是否开源基于Jnitrace日志补环境代码说明](https://github.com/anjia0532/unidbg-boot-server/issues/1)
+
 ## 使用
 
 ### 环境准备
