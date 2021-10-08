@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class TempFileUtils {
     public static File getTempFile(String classPathFileName) throws IOException {
-        File soLibFile = new File(System.getProperty("java.io.tmpdir") + classPathFileName);
+        File soLibFile = new File(System.getProperty("java.io.tmpdir"), classPathFileName);
         if (!soLibFile.exists()) {
             FileUtils.copyInputStreamToFile(new ClassPathResource(classPathFileName).getInputStream(), soLibFile);
         }
