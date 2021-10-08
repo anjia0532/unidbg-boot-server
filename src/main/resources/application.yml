@@ -7,6 +7,8 @@ application:
     verbose: false
 
 spring:
+  application:
+    name: unidbg-boot-server
   profiles:
     active: dev
   task:
