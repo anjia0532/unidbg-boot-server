@@ -31,7 +31,6 @@ public class TTEncryptServiceWorker implements Worker {
     public TTEncryptServiceWorker(UnidbgProperties unidbgProperties,
                                   @Value("${spring.task.execution.pool.core-size:4}") int poolSize) {
         this.unidbgProperties = unidbgProperties;
-        this.ttEncryptService = new TTEncryptService(unidbgProperties);
         pool = WorkerPoolFactory.create(() ->
                         new TTEncryptServiceWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose()),
                 Math.max(poolSize, 4));
