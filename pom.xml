@@ -29,6 +29,7 @@
         <commons-io.version>2.11.0</commons-io.version>
         <streamex.version>0.7.3</streamex.version>
         <commons-codec.version>1.15</commons-codec.version>
+        <jib-maven-plugin.version>3.1.4</jib-maven-plugin.version>
     </properties>
 
     <dependencies>

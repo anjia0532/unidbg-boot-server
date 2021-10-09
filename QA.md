@@ -115,6 +115,40 @@ private final static String LIBTT_ENCRYPT_LIB_PATH="data/apks/so/libttEncrypt.so
 
 vm.loadLibrary(TempFileUtils.getTempFile(LIBTT_ENCRYPT_LIB_PATH),false);
 ```
+idea运行正常，java -jar 运行访问`unidbg-android-0.9.0.jar!/android/sdk23/proc/stat`报错
+
+```bash
+java.lang.IllegalStateException: find failed: jarPath=/target/unidbg-boot-server-0.0.1-SNAPSHOT.jar, name=BOOT-INF/lib/unidbg
+-android-0.9.0.jar!/android/sdk23/proc/stat
+        at com.github.unidbg.utils.ResourceUtils.findJarEntry(ResourceUtils.java:134)
+        at com.github.unidbg.utils.ResourceUtils.isFile(ResourceUtils.java:108)
+        at com.github.unidbg.utils.ResourceUtils.extractResource(ResourceUtils.java:19)
+        at com.github.unidbg.linux.android.AndroidResolver.resolve(AndroidResolver.java:84)
+        at com.github.unidbg.unix.UnixSyscallHandler.resolve(UnixSyscallHandler.java:89)
+        at com.github.unidbg.unix.UnixSyscallHandler.open(UnixSyscallHandler.java:273)
+        at com.github.unidbg.linux.ARM32SyscallHandler.openat(ARM32SyscallHandler.java:1883)
+        at com.github.unidbg.linux.ARM32SyscallHandler.hook(ARM32SyscallHandler.java:389)
+        at com.github.unidbg.arm.backend.UnicornBackend$6.hook(UnicornBackend.java:244)
+        at unicorn.Unicorn$NewHook.onInterrupt(Unicorn.java:128)
+        at unicorn.Unicorn.emu_start(Native Method)
+        at com.github.unidbg.arm.backend.UnicornBackend.emu_start(UnicornBackend.java:269)
+        at com.github.unidbg.AbstractEmulator.emulate(AbstractEmulator.java:382)
+        at com.github.unidbg.AbstractEmulator.eFunc(AbstractEmulator.java:471)
+        at com.github.unidbg.arm.AbstractARMEmulator.eInit(AbstractARMEmulator.java:227)
+        at com.github.unidbg.linux.AbsoluteInitFunction.call(AbsoluteInitFunction.java:38)
+        at com.github.unidbg.linux.LinuxModule.callInitFunction(LinuxModule.java:102)
+        at com.github.unidbg.linux.AndroidElfLoader.loadInternal(AndroidElfLoader.java:180)
+        at com.github.unidbg.linux.AndroidElfLoader.loadInternal(AndroidElfLoader.java:35)
+        at com.github.unidbg.spi.AbstractLoader.load(AbstractLoader.java:208)
+        at com.github.unidbg.linux.android.dvm.BaseVM.loadLibrary(BaseVM.java:266)
+        at com.anjia.unidbgserver.service.TTEncryptService.<init>(TTEncryptService.java:73)
+        at com.anjia.unidbgserver.service.TTEncryptServiceWorker.<init>(TTEncryptServiceWorker.java:48)
+        at com.anjia.unidbgserver.service.TTEncryptServiceWorker.lambda$new$0(TTEncryptServiceWorker.java:37)
+        at com.github.unidbg.worker.DefaultWorkerPool.run(DefaultWorkerPool.java:44)
+        at java.lang.Thread.run(Thread.java:748)
+
+```
+改成[docker打包部署](README.md#docker打包)就可以了，可能是unidbg访问spring boot打包的fatjar的文件资源有兼容性问题。
 
 ### 高并发请求
 
