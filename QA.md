@@ -27,6 +27,22 @@ spring:
         max-size: 8
 ```
 
+### docker运行报 sh: /entrypoint.sh: not found
+
+打开 `src/main/docker/jib/entrypoint.sh` 查看右下角换行符是`LF`还是`CRLF` ,需要改成`LF`
+
+简单判断
+
+`docker run -it your_docker_hub_password/unidbg-boot-server vi /entrypoint.sh` 注意看最后的`^M`
+
+```bash
+#!/bin/sh^M
+^M
+java ${JAVA_OPTS:''} \^M
+-Djava.security.egd=file:/dev/./urandom \^M
+-cp /app/resources/:/app/classes/:/app/libs/* "com.anjia.unidbgserver.UnidbgServerApplication"^M
+```
+
 ### 打印native地址，so文件名，出入参
 参考  `src/test/java/com/anjia/unidbgserver/RegisterNativeTest.java`
 
