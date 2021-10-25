@@ -7,7 +7,6 @@ import com.github.unidbg.arm.HookStatus;
 import com.github.unidbg.arm.backend.DynarmicFactory;
 import com.github.unidbg.arm.context.Arm32RegisterContext;
 import com.github.unidbg.arm.context.RegisterContext;
-import com.github.unidbg.debugger.DebuggerType;
 import com.github.unidbg.hook.HookContext;
 import com.github.unidbg.hook.ReplaceCallback;
 import com.github.unidbg.hook.hookzz.*;
@@ -25,7 +24,6 @@ import com.sun.jna.Pointer;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
 import java.io.IOException;
 
 @Slf4j
@@ -36,7 +34,7 @@ public class TTEncryptService {
     private final Module module;
 
     private final DvmClass TTEncryptUtils;
-    private final static String LIBTT_ENCRYPT_LIB_PATH = "data/apks/so/libttEncrypt.so";
+    private final static String TT_ENCRYPT_LIB_PATH = "data/apks/so/libttEncrypt.so";
     private final Boolean DEBUG_FLAG;
 
     @SneakyThrows TTEncryptService(UnidbgProperties unidbgProperties) {
@@ -58,7 +56,7 @@ public class TTEncryptService {
         // 设置是否打印Jni调用细节
         vm.setVerbose(unidbgProperties.isVerbose());
         // 加载libttEncrypt.so到unicorn虚拟内存，加载成功以后会默认调用init_array等函数
-        DalvikModule dm = vm.loadLibrary(TempFileUtils.getTempFile(LIBTT_ENCRYPT_LIB_PATH), false);
+        DalvikModule dm = vm.loadLibrary(TempFileUtils.getTempFile(TT_ENCRYPT_LIB_PATH), false);
         // 手动执行JNI_OnLoad函数
         dm.callJNI_OnLoad(emulator);
         // 加载好的libttEncrypt.so对应为一个模块
@@ -76,7 +74,7 @@ public class TTEncryptService {
         }
     }
 
-    public byte[] ttEncrypt() {
+    public byte[] ttEncrypt(String body) {
         if (DEBUG_FLAG) {
             // 在libttEncrypt.so模块中查找sbox0导出符号
             Symbol sbox0 = module.findSymbolByName("sbox0");

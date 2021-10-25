@@ -7,17 +7,19 @@
 
 ### 环境准备
 
-1. 必须使用Java8
-2. Maven3.5以上 ，如果电脑没有安装Maven，最简单办法是将下面的 `mvn` 命令替换成 `mvnw` ，会自动下载maven 
+1. 必须使用Java8(jdk11或其他版本引发的问题，请自行解决)
+2. Maven3.5以上 ，如果电脑没有安装Maven，最简单办法是将下面的 `mvn` 命令替换成 `mvnw`(如果是linux/mac一类的，要替换成`./mvnw`,并且先执行`chmod +x ./mvnw`) ，会自动下载maven 
+3. Idea 2021+
+4. 需要安装[Lombok插件](https://plugins.jetbrains.com/plugin/6317-lombok)
 
 ## 快速体验
 
 ```bash
 git clone https://github.com/anjia0532/unidbg-boot-server.git
 
-# 体验jar版本
+# 体验jar版本,打成jar包
 mvn package -T10 -DskipTests
-# 没有maven就用 mvnw package -T10 -DskipTests
+# 没有maven就用 mvnw package -T10 -DskipTests (linux等需要用 chmod +x ./mvnw && ./mvnw package -T10 -DskipTests)
 
 java -jar target\unidbg-boot-server-0.0.1-SNAPSHOT.jar
 

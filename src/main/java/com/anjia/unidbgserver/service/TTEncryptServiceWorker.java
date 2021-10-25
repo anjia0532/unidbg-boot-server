@@ -4,6 +4,7 @@ import com.anjia.unidbgserver.config.UnidbgProperties;
 import com.github.unidbg.worker.Worker;
 import com.github.unidbg.worker.WorkerPool;
 import com.github.unidbg.worker.WorkerPoolFactory;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,8 +33,8 @@ public class TTEncryptServiceWorker implements Worker {
                                   @Value("${spring.task.execution.pool.core-size:4}") int poolSize) {
         this.unidbgProperties = unidbgProperties;
         pool = WorkerPoolFactory.create(() ->
-                        new TTEncryptServiceWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose()),
-                Math.max(poolSize, 4));
+                new TTEncryptServiceWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose()),
+            Math.max(poolSize, 4));
         log.info("线程池为:{}", Math.max(poolSize, 4));
     }
 
@@ -46,17 +47,18 @@ public class TTEncryptServiceWorker implements Worker {
     }
 
     @Async
-    public CompletableFuture<byte[]> ttEncrypt() {
+    @SneakyThrows
+    public CompletableFuture<byte[]> ttEncrypt(String key1, String body) {
 
-        TTEncryptServiceWorker worker = pool.borrow(2, TimeUnit.SECONDS);
-        assert worker != null;
-        byte[] data = null;
-        try {
-            data = worker.doWork();
-        } catch (Exception ex) {
-            log.error("TTEncrypt失败", ex);
-        } finally {
+        TTEncryptServiceWorker worker;
+        byte[] data;
+        while (true) {
+            if ((worker = pool.borrow(2, TimeUnit.SECONDS)) == null) {
+                continue;
+            }
+            data = worker.doWork(key1, body);
             pool.release(worker);
+            break;
         }
         return CompletableFuture.completedFuture(data);
     }
@@ -67,8 +69,8 @@ public class TTEncryptServiceWorker implements Worker {
         log.info("Destroy: {}", ttEncryptService);
     }
 
-    private byte[] doWork() {
-        return ttEncryptService.ttEncrypt();
+    private byte[] doWork(String key1, String body) {
+        return ttEncryptService.ttEncrypt(body);
     }
 
 }

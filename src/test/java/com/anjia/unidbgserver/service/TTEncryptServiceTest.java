@@ -29,13 +29,13 @@ class TTEncryptServiceTest {
     @SneakyThrows @Test
     void testServiceGetMtgsig() {
         TTEncryptService ttEncryptService = new TTEncryptService(properties);
-        byte[] data = ttEncryptService.ttEncrypt();
+        byte[] data = ttEncryptService.ttEncrypt(null);
         log.info(new String(data));
     }
 
     @SneakyThrows @Test
     void testWorkerGetMtgsig() {
-        byte[] data = ttEncryptServiceWorker.ttEncrypt().get();
+        byte[] data = ttEncryptServiceWorker.ttEncrypt(null, null).get();
         log.info(new String(data));
     }
 }
