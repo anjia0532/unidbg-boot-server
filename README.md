@@ -1,8 +1,9 @@
 # 基于unidbg0.9.5和spring boot 2.5.5开发的高并发server服务器
 
 ## 重要说明
-- [关于是否开源基于Jnitrace日志补环境代码说明](https://github.com/anjia0532/unidbg-boot-server/issues/1)
 
+- [关于是否开源基于Jnitrace日志补环境代码说明](https://github.com/anjia0532/unidbg-boot-server/issues/1)
+- [常见问题 -- 遇到问题先看看这里有没有，再提问，心累](QA.md) 
 ## 使用
 
 ### 环境准备
@@ -29,8 +30,25 @@ docker run --restart=always -d -p9999:9999 anjia0532/unidbg-boot-server
 
 ## 调用
 
+启动成功后会打印类似内容
+
 ```bash
-curl  http://127.0.0.1:9999/api/tt-encrypt/encrypt
+----------------------------------------------------------
+	应用: 		unidbg-boot-server 已启动!
+	地址: 		http://127.0.0.1:9999/
+	演示访问: 	curl http://127.0.0.1:9999/api/tt-encrypt/encrypt (linux)
+	演示访问: 	http://127.0.0.1:9999/api/tt-encrypt/encrypt (windows: 浏览器直接打开)
+	常见问题: 	https://github.com/anjia0532/unidbg-boot-server/blob/main/QA.md
+	配置文件: 	[application, application-dev]
+----------------------------------------------------------
+```
+
+```bash
+# GET 方式访问
+curl -XGET  http://127.0.0.1:9999/api/tt-encrypt/encrypt
+
+# POST 方式访问
+curl -XPOST  http://127.0.0.1:9999/api/tt-encrypt/encrypt
 ```
 
 ## 压测
