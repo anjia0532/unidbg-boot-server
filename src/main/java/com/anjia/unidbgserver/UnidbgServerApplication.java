@@ -47,6 +47,7 @@ public class UnidbgServerApplication {
         log.info("\n----------------------------------------------------------\n\t"
                         + "应用: \t\t{} 已启动!\n\t"
                         + "地址: \t\thttp://{}:{}{}\n\t"
+                        + "演示访问: \t\tcurl http://{}:{}{}/api/tt-encrypt/encrypt\n\t"
                         + "常见问题: \thttps://github.com/anjia0532/unidbg-boot-server/blob/main/QA.md\n\t"
                         + "配置文件: \t{}\n----------------------------------------------------------",
                 StringUtils.defaultIfBlank(env.getProperty(SPRING_APPLICATION_NAME), DEFAULT_APPLICATION_NAME),

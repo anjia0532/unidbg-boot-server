@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 /**
- * 美团控制类
+ * 控制类
  *
  * @author AnJia
  * @since 2021-07-26 18:31
@@ -24,12 +24,17 @@ public class TTEncryptController {
 
     /**
      * 获取mtgsig
-     *
+     * 
+     * public byte[] ttEncrypt(@RequestParam(required = false) String key1, @RequestBody String body) 
+     * // 这是接收一个url参数，名为key1,接收一个post或者put请求的body参数
+     * key1是选填参数，不写也不报错，值为,body只有在请求方法是POST时才有，GET没有
      * @return 结果
      */
     @SneakyThrows @RequestMapping(value = "encrypt", method = {RequestMethod.GET, RequestMethod.POST})
-    public byte[] ttEncrypt(@RequestParam(required = false) String key1, @RequestBody String body) {
-        log.info("key1是选填参数，不写也不报错，值为:{},body只有在请求方法是POST时才有，GET没有，值为:{}", key1, body);
+    public byte[] ttEncrypt() {
+        String key1="key1";
+        String body="body";
+        // 演示传参
         return ttEncryptServiceWorker.ttEncrypt(key1, body).get();
     }
 }
