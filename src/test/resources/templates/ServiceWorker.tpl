@@ -48,16 +48,15 @@ public class [[${ServiceName}]]ServiceWorker implements Worker {
 
     @Async
     public CompletableFuture<Object> doWork(Object param) {
-
-        [[${ServiceName}]]ServiceWorker worker = pool.borrow(2, TimeUnit.SECONDS);
-        assert worker != null;
-        Object data = null;
-        try {
+        [[${ServiceName}]]ServiceWorker worker;
+        Object data;
+        while (true) {
+            if ((worker = pool.borrow(2, TimeUnit.SECONDS)) == null) {
+                continue;
+            }
             data = worker.exec(param);
-        } catch (Exception ex) {
-            log.error("[[${ServiceName}]]失败", ex);
-        } finally {
             pool.release(worker);
+            break;
         }
         return CompletableFuture.completedFuture(data);
     }

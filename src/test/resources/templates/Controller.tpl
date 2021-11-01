@@ -25,12 +25,18 @@ public class [(${ServiceName})]Controller {
     /**
      * 获取 [(${#strings.toLowerCase(ServiceName)})] 计算结果
      *
+     * public byte[] ttEncrypt(@RequestParam(required = false) String key1, @RequestBody String body)
+     * 这是接收一个url参数，名为key1,接收一个post或者put请求的body参数
+     * key1是选填参数，不写也不报错，值为,body只有在请求方法是POST时才有，GET没有
+     *
      * @return 结果
      */
+
     @SneakyThrows @RequestMapping(value = "do-work", method = {RequestMethod.GET, RequestMethod.POST})
-    public Object [(${#strings.toLowerCase(ServiceName)})](@RequestBody Object param) {
-        // 如果想用body接收参数 就用 @RequestBody 注解
-        // 如果想用url传参，就用
-        return [(${#strings.toLowerCase(#strings.substring(ServiceName,0,1))})][(${#strings.substring(ServiceName,1)})]ServiceWorker.doWork(param).get();
+    public Object [(${#strings.toLowerCase(ServiceName)})]() {
+        String key1="key1";
+        String body="body";
+        // 演示传参
+        return [(${#strings.toLowerCase(#strings.substring(ServiceName,0,1))})][(${#strings.substring(ServiceName,1)})]ServiceWorker.doWork(body).get();
     }
 }
