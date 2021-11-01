@@ -23,9 +23,9 @@ public class TTEncryptController {
     private TTEncryptServiceWorker ttEncryptServiceWorker;
 
     /**
-     * 获取mtgsig
-     * 
-     * public byte[] ttEncrypt(@RequestParam(required = false) String key1, @RequestBody String body) 
+     * 获取ttEncrypt
+     *
+     * public byte[] ttEncrypt(@RequestParam(required = false) String key1, @RequestBody String body)
      * // 这是接收一个url参数，名为key1,接收一个post或者put请求的body参数
      * key1是选填参数，不写也不报错，值为,body只有在请求方法是POST时才有，GET没有
      * @return 结果
