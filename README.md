@@ -144,4 +144,4 @@ sudo docker run  -d -p9999:9999 your_docker_hub_username/unidbg-boot-server
     </tr>
 </table>
 
-<img src="./docs/zsxq.jpg" width="300px">
+![知识星球](./docs/zsxq.jpg)
