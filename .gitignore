@@ -31,4 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
-!/src/test/resources/frida/
+/src/test/resources/frida/
