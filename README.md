@@ -5,6 +5,7 @@
 - [关于是否开源基于Jnitrace日志补环境代码说明](https://github.com/anjia0532/unidbg-boot-server/issues/1)
 - [常见问题 -- 遇到问题先看看这里有没有，再提问，心累](QA.md) 
 - [unidbg-boot-server零基础入门](https://juejin.cn/post/7025794546655035422)
+- [指定版本自动编译葫芦娃frida strongR-frida-android](https://github.com/anjia0532/strongR-frida-android)
 
 
 ## 使用
