@@ -12,6 +12,8 @@ application:
     dynarmic: false
     # 是否打印jni调用细节 vm.setVerbose()
     verbose: false
+    # 是否使用异步多线程,默认值为true，如果false则改成加锁单线程调用
+    async: true
 
 # 多线程相关
 spring:
@@ -26,6 +28,12 @@ spring:
         # 最多增长到多少线程
         max-size: 8
 ```
+
+### Worker多线程运行内存报错问题
+
+![](./docs/UC_ERR_WRITE.png)
+
+修改配置文件`application*.yml`的 `application.unidbg.async` 为`false`，则改成单线程加锁运行
 
 ### docker运行报 sh: /entrypoint.sh: not found
 

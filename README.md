@@ -6,6 +6,7 @@
 - [常见问题 -- 遇到问题先看看这里有没有，再提问，心累](QA.md) 
 - [unidbg-boot-server零基础入门](https://juejin.cn/post/7025794546655035422)
 - [指定版本自动编译葫芦娃frida strongR-frida-android](https://github.com/anjia0532/strongR-frida-android)
+- [Worker多线程运行内存报错问题](QA.md#Worker多线程运行内存报错问题)
 
 
 ## 使用

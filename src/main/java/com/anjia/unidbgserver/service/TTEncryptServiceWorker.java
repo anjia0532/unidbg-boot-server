@@ -32,10 +32,14 @@ public class TTEncryptServiceWorker implements Worker {
     public TTEncryptServiceWorker(UnidbgProperties unidbgProperties,
                                   @Value("${spring.task.execution.pool.core-size:4}") int poolSize) {
         this.unidbgProperties = unidbgProperties;
-        pool = WorkerPoolFactory.create(() ->
-                new TTEncryptServiceWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose()),
-            Math.max(poolSize, 4));
-        log.info("线程池为:{}", Math.max(poolSize, 4));
+        if (this.unidbgProperties.isAsync()) {
+            pool = WorkerPoolFactory.create(() ->
+                    new TTEncryptServiceWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose()),
+                Math.max(poolSize, 4));
+            log.info("线程池为:{}", Math.max(poolSize, 4));
+        } else {
+            this.ttEncryptService = new TTEncryptService(unidbgProperties);
+        }
     }
 
     public TTEncryptServiceWorker(boolean dynarmic, boolean verbose) {
@@ -52,13 +56,19 @@ public class TTEncryptServiceWorker implements Worker {
 
         TTEncryptServiceWorker worker;
         byte[] data;
-        while (true) {
-            if ((worker = pool.borrow(2, TimeUnit.SECONDS)) == null) {
-                continue;
+        if (this.unidbgProperties.isAsync()) {
+            while (true) {
+                if ((worker = pool.borrow(2, TimeUnit.SECONDS)) == null) {
+                    continue;
+                }
+                data = worker.doWork(key1, body);
+                pool.release(worker);
+                break;
             }
-            data = worker.doWork(key1, body);
-            pool.release(worker);
-            break;
+        } else {
+            synchronized (this) {
+                data = this.doWork(key1, body);
+            }
         }
         return CompletableFuture.completedFuture(data);
     }
