@@ -31,7 +31,7 @@ spring:
 
 ### Worker多线程运行内存报错问题
 
-![](./docs/UC_ERR_WRITE.png)
+![](docs/UC_ERR_WRITE.png)
 
 修改配置文件`application*.yml`的 `application.unidbg.async` 为`false`，则改成单线程加锁运行
 
