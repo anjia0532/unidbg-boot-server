@@ -46,7 +46,7 @@ public class RegisterNativeTest  extends AbstractJni {
         vm.setJni(this);
 
 
-        List<String> denyList = Arrays.asList("libnodelibnode.so", "libv8.so", "libmtmap.so");
+        List<String> denyList = Arrays.asList("libnodelibnode.so", "libv8.so", "libmtmap.so","libttEncrypt.so");
 
         for (File file : Objects.requireNonNull(new File("src/main/resources/data/apks/so/").listFiles())) {
             if (denyList.contains(file.getName())) {
