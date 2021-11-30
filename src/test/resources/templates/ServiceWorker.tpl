@@ -50,13 +50,19 @@ public class [[${ServiceName}]]ServiceWorker implements Worker {
     public CompletableFuture<Object> doWork(Object param) {
         [[${ServiceName}]]ServiceWorker worker;
         Object data;
-        while (true) {
-            if ((worker = pool.borrow(2, TimeUnit.SECONDS)) == null) {
-                continue;
+        if (this.unidbgProperties.isAsync()) {
+            while (true) {
+                if ((worker = pool.borrow(2, TimeUnit.SECONDS)) == null) {
+                    continue;
+                }
+                data = worker.exec(param);
+                pool.release(worker);
+                break;
             }
-            data = worker.exec(param);
-            pool.release(worker);
-            break;
+        } else {
+            synchronized (this) {
+                data = this.exec(param);
+            }
         }
         return CompletableFuture.completedFuture(data);
     }
