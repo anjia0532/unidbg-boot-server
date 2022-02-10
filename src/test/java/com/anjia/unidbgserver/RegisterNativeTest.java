@@ -31,6 +31,11 @@ public class RegisterNativeTest  extends AbstractJni {
     private VM vm;
 
     @Test
+    public void generatorTest() throws IOException {
+
+        // 写你代码,不会写的，参考下面的test()
+    }
+    //@Test
     public void test() throws IOException {
         // 创建模拟器实例，要模拟32位或者64位，在这里区分
         emulator = AndroidEmulatorBuilder.for32Bit().setProcessName("com.anjia.test").build();

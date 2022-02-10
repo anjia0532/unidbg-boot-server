@@ -1,4 +1,4 @@
-# 基于unidbg0.9.5和spring boot 2.5.5开发的高并发server服务器
+# 基于unidbg0.9.6和spring boot 2.6.3开发的高并发server服务器
 
 ## 重要说明
 
