@@ -218,3 +218,25 @@ java.lang.IllegalStateException: find failed: jarPath=/target/unidbg-boot-server
     <!-- 忽略其他部分 -->
 </project>
 ```
+
+### UnidbgServer运行一段时间后拒绝服务或无响应
+
+这一般是用到了unidbg 或者 unicorn 高级特性，或者是写的 unidbg 模拟代码有问题，不是 unidbg server 本身原因导致的。
+
+一般会有人说，我之前没用 unidbg server 时，写了个 jar ,每次调用都好好的，换了 unidbg server 后才出现的这个问题。。。废话，你写了个 unidbg jar 每次调用，相当于每次重新创建jvm，解析apk或者so重新初始化，每次都是新的，可不没事嘛。unidbg server 是启动时初始化一次后，后边一直在复用。
+
+加上 unidbg 本身对于多线程支持不是很好，很容易导致遇到锁问题，或者线程/内存泄露问题。
+
+而且一般用 unidbg 搞的都 TM 敏感资源，我想替你定位问题，先不说你舍不舍得把源码发我，我 TM 还怕不小心进去呢。
+
+所以，这事，只能内部处理（自己会 java， 团队内部有会 java 的次之，认识靠谱的会 java 的也行）。
+
+补充两个神器，辅助定位问题
+
+- [arthas -- Java定位问题神器](https://arthas.aliyun.com/doc/)
+- [arthas-idea-plugin -- idea 的 arthas 插件](https://www.yuque.com/arthas-idea-plugin)
+
+另外补充两个办法（不指标也不治本，试试呗，又不会怀孕，万一有用呢）
+
+- 尝试去掉多线程，改用单线程试试 [Worker多线程运行内存报错问题](#Worker多线程运行内存报错问题)
+- 尝试写个全局变量，外部每调用N次后，重新初始化apk/so
