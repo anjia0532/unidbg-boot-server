@@ -29,6 +29,40 @@ spring:
         max-size: 8
 ```
 
+### 如何灵活使用 Git 玩出花样
+
+为嘛加这部分与 unidbg 无关的文档，是因为一个看着比较惨痛的 issues  
+[打包的时候，一不小心没跳过TEST，直接就把所有代码给功亏一篑了](https://github.com/anjia0532/unidbg-boot-server/issues/5)
+
+#### 添加自己个人库
+
+git clone 下来后，默认我的库是 origin  可以用 `git branch -r` 来查看，`origin/main` 就是我的了，可以通过 `git pull` 来更新
+
+`git remote add myrepo https://github.com/xxx/xxx.git`
+
+后边有改动了，就可以推到自己的库里。
+
+建议使用 idea 的 UI 来操作，参考 <https://www.jetbrains.com/idea/guide/tutorials/creating-a-project-from-github/adding-updating-remotes/>
+嫌TM英文看不懂的，建议你装个翻译软件。
+
+#### 提交代码
+参考 <https://www.jetbrains.com/help/idea/commit-and-push-changes.html>
+
+#### 不想/不会用 Git，则使用本地历史变更
+
+参考 <https://www.jetbrains.com/help/idea/local-history.html>
+
+#### 回滚变更
+
+参考 <https://www.jetbrains.com/help/idea/undo-changes.html>
+
+#### 如何优雅的抄别人的作业
+
+花式求大佬本地 Commit 变更，然后让他导出 补丁(patch) ，你直接导入即可无痛抄作业了。
+
+参考 <https://www.jetbrains.com/help/idea/using-patches.html>
+
+
 ### Worker多线程运行内存报错问题
 
 ![](docs/UC_ERR_WRITE.png)

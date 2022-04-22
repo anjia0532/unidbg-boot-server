@@ -30,6 +30,8 @@
         <streamex.version>0.7.3</streamex.version>
         <commons-codec.version>1.15</commons-codec.version>
         <jib-maven-plugin.version>3.1.4</jib-maven-plugin.version>
+        <!-- 默认跳过单元测试 为嘛加这个跳过呢，参考这个issues https://github.com/anjia0532/unidbg-boot-server/issues/5 -->
+        <maven.test.skip>true</maven.test.skip>
     </properties>
 
     <dependencies>
