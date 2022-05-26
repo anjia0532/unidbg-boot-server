@@ -18,6 +18,7 @@
 2. Maven3.5以上 ，如果电脑没有安装Maven，最简单办法是将下面的 `mvn` 命令替换成 `mvnw`(如果是linux/mac一类的，要替换成`./mvnw`,并且先执行`chmod +x ./mvnw`) ，会自动下载maven 
 3. Idea 2021+
 4. 需要安装[Lombok插件](https://plugins.jetbrains.com/plugin/6317-lombok)
+5. 注意，很多人不会用多线程以及 unidbg 对多线程支持的不好，所以默认禁用多线程，如果需要启用，修改 application.yml 里的 async 为 true
 
 ## 快速体验
 
@@ -82,8 +83,12 @@ Transfer/sec:    501.09KB
 
 ```bash
 git clone https://github.com/zhkl0228/unidbg.git
+# 自己魔改
 cd unidbg
-mvn clean install -Dgpg.skip=true -T10
+# linux mac windows cmd
+mvn clean install -Dgpg.skip=true -Dmaven.javadoc.skip=true -T10
+# windows powershell
+mvn clean install `-Dgpg.skip=true `-Dmaven.javadoc.skip=true `-T10
 ```
 
 以最新快照版 `0.9.5-SNAPSHOT` 为例，修改 `unidbg-boot-server/pom.xml` 里的 `<unidbg.version>0.9.4</unidbg.version>`
