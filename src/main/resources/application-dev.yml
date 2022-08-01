@@ -3,5 +3,6 @@ server:
 
 application:
   unidbg:
-    dynarmic: true
+    dynarmic: false
     verbose: false
+    async: false

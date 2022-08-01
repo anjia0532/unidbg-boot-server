@@ -11,30 +11,31 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service("ttEncryptWorker")
-public class TTEncryptServiceWorker implements Worker {
+public class TTEncryptServiceWorker extends Worker {
 
     private UnidbgProperties unidbgProperties;
     private WorkerPool pool;
     private TTEncryptService ttEncryptService;
 
 
-    public TTEncryptServiceWorker() {
+    public TTEncryptServiceWorker(WorkerPool pool) {
+        super(pool);
 
     }
 
     @Autowired
     public TTEncryptServiceWorker(UnidbgProperties unidbgProperties,
                                   @Value("${spring.task.execution.pool.core-size:4}") int poolSize) {
+        super(null);
         this.unidbgProperties = unidbgProperties;
         if (this.unidbgProperties.isAsync()) {
-            pool = WorkerPoolFactory.create(() ->
-                    new TTEncryptServiceWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose()),
+            pool = WorkerPoolFactory.create((pool) ->
+                    new TTEncryptServiceWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose(),pool),
                 Math.max(poolSize, 4));
             log.info("线程池为:{}", Math.max(poolSize, 4));
         } else {
@@ -42,7 +43,8 @@ public class TTEncryptServiceWorker implements Worker {
         }
     }
 
-    public TTEncryptServiceWorker(boolean dynarmic, boolean verbose) {
+    public TTEncryptServiceWorker(boolean dynarmic, boolean verbose, WorkerPool pool) {
+        super(pool);
         this.unidbgProperties = new UnidbgProperties();
         unidbgProperties.setDynarmic(dynarmic);
         unidbgProperties.setVerbose(verbose);
@@ -73,14 +75,11 @@ public class TTEncryptServiceWorker implements Worker {
         return CompletableFuture.completedFuture(data);
     }
 
-    @Override
-    public void close() throws IOException {
-        ttEncryptService.destroy();
-        log.info("Destroy: {}", ttEncryptService);
-    }
-
     private byte[] doWork(String key1, String body) {
         return ttEncryptService.ttEncrypt(body);
     }
 
+    @SneakyThrows @Override public void destroy() {
+        ttEncryptService.destroy();
+    }
 }

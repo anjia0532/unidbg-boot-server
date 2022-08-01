@@ -5,6 +5,7 @@ application:
   unidbg:
     dynarmic: false
     verbose: false
+    async: false
 
 spring:
   task:
