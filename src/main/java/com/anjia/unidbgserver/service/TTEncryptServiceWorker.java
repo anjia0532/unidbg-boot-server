@@ -22,21 +22,27 @@ public class TTEncryptServiceWorker extends Worker {
     private WorkerPool pool;
     private TTEncryptService ttEncryptService;
 
+    @Autowired
+    public void init(UnidbgProperties unidbgProperties) {
+        this.unidbgProperties = unidbgProperties;
+    }
+
+    public TTEncryptServiceWorker() {
+        super(WorkerPoolFactory.create(TTEncryptServiceWorker::new, Runtime.getRuntime().availableProcessors()));
+    }
 
     public TTEncryptServiceWorker(WorkerPool pool) {
         super(pool);
-
     }
 
     @Autowired
     public TTEncryptServiceWorker(UnidbgProperties unidbgProperties,
                                   @Value("${spring.task.execution.pool.core-size:4}") int poolSize) {
-        super(null);
+        super(WorkerPoolFactory.create(TTEncryptServiceWorker::new, Runtime.getRuntime().availableProcessors()));
         this.unidbgProperties = unidbgProperties;
         if (this.unidbgProperties.isAsync()) {
-            pool = WorkerPoolFactory.create((pool) ->
-                    new TTEncryptServiceWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose(),pool),
-                Math.max(poolSize, 4));
+            pool = WorkerPoolFactory.create(pool -> new TTEncryptServiceWorker(unidbgProperties.isDynarmic(),
+                unidbgProperties.isVerbose(), pool), Math.max(poolSize, 4));
             log.info("线程池为:{}", Math.max(poolSize, 4));
         } else {
             this.ttEncryptService = new TTEncryptService(unidbgProperties);
@@ -79,7 +85,8 @@ public class TTEncryptServiceWorker extends Worker {
         return ttEncryptService.ttEncrypt(body);
     }
 
-    @SneakyThrows @Override public void destroy() {
+    @SneakyThrows
+    @Override public void destroy() {
         ttEncryptService.destroy();
     }
 }

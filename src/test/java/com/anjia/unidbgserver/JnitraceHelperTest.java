@@ -33,7 +33,7 @@ public class JnitraceHelperTest {
     @Test
     public void testTpl() throws DecoderException, IOException {
         // jnitrace log 文件 路径
-        String mt = "meituan.txt";
+        String mt = "src/test/resources/frida/mt.txt";
         // 名字
         String serviceName = "MeiTuan";
 
