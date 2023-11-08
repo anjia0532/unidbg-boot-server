@@ -37,7 +37,7 @@ public class [[${ServiceName}]]ServiceWorker extends Worker {
         this.unidbgProperties = unidbgProperties;
         this.[(${#strings.toLowerCase(#strings.substring(ServiceName,0,1))})][(${#strings.substring(ServiceName,1)})]Service = new [[${ServiceName}]]Service(unidbgProperties);
         pool = WorkerPoolFactory.create((pool) ->
-                        new MeiTuanServiceWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose(),pool),
+                        new [[${ServiceName}]]ServiceWorker(unidbgProperties.isDynarmic(), unidbgProperties.isVerbose(),pool),
                 Math.max(poolSize, 4));
         log.info("线程池为:{}", Math.max(poolSize, 4));
     }
