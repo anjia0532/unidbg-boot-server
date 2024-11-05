@@ -165,6 +165,14 @@ linux和mac os 下可以用 Supervisor 参考 [Supervisor-java守护进程工具
 把二进制文件 libttEncrypt.so 放到 `src/resources/data/apks/so/` 下, 然后调用`TempFileUtils.getTempFile(LIBTT_ENCRYPT_LIB_PATH)` (
 将classpath下的文件copy到临时目录里，后边访问临时目录的即可。)
 
+**故障排查**
+```
+java.util.zip.ZipException: zip END header not found
+java.util.zip.ZipException: error in opening zip file
+```
+遇到以上错误 原因为临时目录里的文件有异常,如权限问题,不同报错是因为java版本不同
+建议进入临时文件夹手动删除对应文件后再进行调试开发
+
 **为啥不直接写死绝对路径，一旦换机器部署，就要重新修改源代码，重新打包，尤其是把代码分发给网友时，很容易踩坑报错。**
 
 ```java
