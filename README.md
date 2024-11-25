@@ -1,6 +1,10 @@
-# 基于unidbg0.9.7和spring boot 2.6.3开发的高并发server服务器
+# 基于unidbg0.9.8和spring boot 2.6.3开发的高并发server服务器
 
 ## 重要说明
+
+**注意：**
+本项目仅是unidbg项目的springweb的简单封装，如果遇到问题，请先看看[常见问题](QA.md)，如果还是不能解决，请尝试更换写法，包括但不限于：多线程改单线程，在请求方法new unidbg对象等。
+我已将近两年不用unidbg（以及Android逆向等方面了），所以也不太会维护，如果有问题，欢迎提交pr。
 
 - [关于是否开源基于Jnitrace日志补环境代码说明](https://github.com/anjia0532/unidbg-boot-server/issues/1)
 - [常见问题 -- 遇到问题先看看这里有没有，再提问，心累](QA.md) 
