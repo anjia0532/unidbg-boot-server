@@ -40,12 +40,14 @@ public class TTEncryptServiceWorker implements Worker {
     }
 
     @Autowired
-    public TTEncryptServiceWorker(UnidbgProperties unidbgProperties) {
+    public TTEncryptServiceWorker(UnidbgProperties unidbgProperties,
+        @Value("${spring.task.execution.pool.core-size:4}") int configuredPoolSize) {
         this.unidbgProperties = unidbgProperties;
         if (this.unidbgProperties.isAsync()) {
+            int effectivePoolSize = workerPoolSize(configuredPoolSize);
             pool = WorkerPoolFactory.create(() -> new TTEncryptServiceWorker(unidbgProperties.isDynarmic(),
-                unidbgProperties.isVerbose(), pool), Math.max(poolSize, 4));
-            log.info("线程池为:{}", poolSize);
+                unidbgProperties.isVerbose(), pool), effectivePoolSize);
+            log.info("线程池为:{}", effectivePoolSize);
         } else {
             this.ttEncryptService = new TTEncryptService(unidbgProperties);
         }
@@ -87,6 +89,10 @@ public class TTEncryptServiceWorker implements Worker {
         long currentTimeMillis = System.currentTimeMillis();
         Inspector.inspect(data, Thread.currentThread().getName() + ": " + (System.currentTimeMillis() - start) + "ms" + ", " + (System.currentTimeMillis() - currentTimeMillis) + "ms");
         return CompletableFuture.completedFuture(data);
+    }
+
+    static int workerPoolSize(int configuredPoolSize) {
+        return Math.max(configuredPoolSize, 4);
     }
 
     private byte[] doWork(String key1, String body) {
